@@ -40,13 +40,35 @@ function App() {
   }
 
   function updateNote(text) {
-    setNotes((oldNotes) =>
-      oldNotes.map((oldNote) => {
-        return oldNote.id === currentNoteId
-          ? { ...oldNote, body: text }
-          : oldNote;
-      })
-    );
+    setNotes((oldNotes) => {
+      const newArray = [];
+      for (let i = 0; i < oldNotes.length; i++) {
+        if (oldNotes[i].id === currentNoteId) {
+          newArray.unshift({ ...oldNotes[i], body: text });
+        } else {
+          newArray.push(oldNotes[i]);
+        }
+      }
+      return newArray;
+    });
+
+    // Loop over the original array
+    // if the id matches
+    // put the updated note at the
+    // beginning of the new array
+    // else
+    // push the old note to the end
+    // of the new array
+    // return the new array
+
+    // *This does not rearrange the notes
+    // setNotes((oldNotes) =>
+    //   oldNotes.map((oldNote) => {
+    //     return oldNote.id === currentNoteId
+    //       ? { ...oldNote, body: text }
+    //       : oldNote;
+    //   })
+    // );
   }
 
   function findCurrentNote() {
