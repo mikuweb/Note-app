@@ -7,18 +7,29 @@ import { nanoid } from "nanoid";
 import { useEffect } from "react";
 
 function App() {
-  
+  /**
+   * Challenge:
+   * Lazily initialize our `notes` state so it doesn't
+   * reach into localStorage on every single re-render
+   * of the App component
+   */
+
   const [notes, setNotes] = React.useState(
-    JSON.parse(localStorage.getItem("notes")) || []
+    () => JSON.parse(localStorage.getItem("notes")) || []
   );
+  //↓ it reaches into localStorage on every single re-render
+  //   JSON.parse(localStorage.getItem("notes")) || []
+  // );
+
   const [currentNoteId, setCurrentNoteId] = React.useState(
     (notes[0] && notes[0].id) || ""
   );
 
   useEffect(() => {
     localStorage.setItem("notes", JSON.stringify(notes));
+    console.log(JSON.stringify(notes[0].body).split("\\n")); // regexp split(/\r?\n/)
   }, [notes]);
-
+  ("Hello my name is \nevin what do you know");
   function createNewNote() {
     const newNote = {
       id: nanoid(),
