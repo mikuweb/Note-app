@@ -1,7 +1,7 @@
 export default function Sidebar(props) {
-const repositionNote = () => {
-  console.log("CLICKED")
-}
+  const repositionNote = () => {
+    console.log("CLICKED");
+  };
 
   const noteElements = props.notes.map((note, index) => (
     <div key={note.id}>
@@ -14,6 +14,14 @@ const repositionNote = () => {
         <h4 className="text-snippet" onClick={repositionNote}>
           {JSON.stringify(note.body).split("\\n")[0]}
         </h4>
+
+        <button
+          className="delete-btn"
+          onClick={(event) => props.deleteNote(event, note.id)}
+        >
+          {/* <FontAwesomeIcon icon="fa-solid fa-trash-can" /> */}
+         <img className="trash-icon" src="./images/trash-can.png"/>
+        </button>
       </div>
     </div>
   ));

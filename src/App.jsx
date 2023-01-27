@@ -1,19 +1,11 @@
 import "./style.css";
 import Sidebar from "./components/Sidebar";
 import Editor from "./components/Editor";
-// import { data } from "./data";
 import Split from "react-split";
 import { nanoid } from "nanoid";
 import { useEffect } from "react";
 
 function App() {
-  /**
-   * Challenge:
-   * Lazily initialize our `notes` state so it doesn't
-   * reach into localStorage on every single re-render
-   * of the App component
-   */
-
   const [notes, setNotes] = React.useState(
     () => JSON.parse(localStorage.getItem("notes")) || []
   );
@@ -27,9 +19,8 @@ function App() {
 
   useEffect(() => {
     localStorage.setItem("notes", JSON.stringify(notes));
-    console.log(JSON.stringify(notes[0].body).split("\\n")); // regexp split(/\r?\n/)
   }, [notes]);
-  ("Hello my name is \nevin what do you know");
+
   function createNewNote() {
     const newNote = {
       id: nanoid(),
@@ -51,16 +42,6 @@ function App() {
       }
       return newArray;
     });
-
-    // Loop over the original array
-    // if the id matches
-    // put the updated note at the
-    // beginning of the new array
-    // else
-    // push the old note to the end
-    // of the new array
-    // return the new array
-
     // *This does not rearrange the notes
     // setNotes((oldNotes) =>
     //   oldNotes.map((oldNote) => {
@@ -69,6 +50,12 @@ function App() {
     //       : oldNote;
     //   })
     // );
+  }
+
+  function deleteNote(event, noteId) {
+    event.stopPropagation();
+    setNotes((oldNotes) => oldNotes.filter((note) => note.id !== noteId));
+    // Your code here
   }
 
   function findCurrentNote() {
@@ -88,6 +75,7 @@ function App() {
             currentNote={findCurrentNote()}
             setCurrentNoteId={setCurrentNoteId}
             newNote={createNewNote}
+            deleteNote={deleteNote}
           />
           {currentNoteId && notes.length > 0 && (
             <Editor currentNote={findCurrentNote()} updateNote={updateNote} />
